@@ -1,0 +1,115 @@
+<head>
+  <title>Leaderboard</title>
+</head>
+<body>
+  <h1 class="banner">
+    Mosesvinenes Squash Tournament Leaderboard
+  </h1>
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span8 offset2">
+        {{> leaderboard}}
+      </div>
+  </div>
+</body>
+
+<template name="leaderboard">
+
+  {{#if msg}}
+  <div class='msg {{msg.level}}'>
+    {{msg.text}}
+  </div>
+  {{/if}}
+
+  <table class="leaderboard">
+    <thead>
+      <tr>
+        <td>Wanker</td>
+        <td># wins</td>
+        <td># defeats</td>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each players}}
+        {{> player}}
+      {{/each}}
+      <tr class='player'>
+        <td class='name'><input id='newguy' class='name newguy' placeholder="new guy's name"/></td>
+        <td class='wins'>-</td>
+        <td class='defeats'>-</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  {{#if two_selected_players }}
+  <div class='matches'>
+    {{> newmatch}}
+  </div>
+  {{/if}}
+
+  {{#if one_selected_player}}
+  <div class="matches">
+    <p>Matches played by {{first_player.name}}</p>
+    {{#each first_player.matches}}
+      {{> historicmatch}}
+    {{/each}}
+  </div>
+  {{/if}}
+
+
+  {{#unless any_selected_players}}
+  <div class="none">Select one player to see his history.
+    Select two players to create a Squash game.</div>
+  {{/unless}}
+</template>
+
+<template name="historicmatch">
+  <form class="row-fluid match">
+    <div class="span5 player">
+      <label class="playername pull-right"><h4>{{match.left_player.name}}</h4>
+        <div class="score pull-right">{{left_score}}</div>
+      </label>
+    </div>
+    <div class="span2 match-seperator">
+      {{match.match_date}}
+    </div>
+    <div class="span5 player">
+      <label class="playername"><h4>{{match.right_player.name}}</h4>
+        <div class="score pull-left">{{right_score}}</div>
+      </label>
+    </div>
+  </div>
+</template>
+
+<template name="newmatch">
+  <div class="row-fluid">
+    <span class="span12 text-center"><h1>New Game</h1></span>
+  </div>
+  <form class="row-fluid match">
+    <div class="span5 player">
+      <label class="playername pull-right"><h4>{{left_player.name}}</h4>
+        <input type="text" id="left-sets" class="set" placeholder="# sets won" />
+      </label>
+    </div>
+    <div class="span2 match-seperator">
+      vs
+    </div>
+    <div class="span5 player">
+      <label class="playername">
+        <h4>{{right_player.name}}</h4>
+        <input type="text" id="right-sets" class="set" placeholder="# sets won" />
+      </label>
+    </div>
+  </form>
+</template>
+
+<template name="player">
+  <tr class="player {{selected}}">
+    <td class="name">{{player.name}}</td>
+    <td class="wins">{{player.score.wins}}</td>
+    <td class="defeats">{{player.score.defeats}}</td>
+    <!-- <td>{{player.score.value}}</td> -->
+  </tr>
+</template>
